@@ -10,7 +10,7 @@ import {
   useFramesReducer,
 } from "frames.js/next/server";
 import Link from "next/link";
-import { DEFAULT_DEBUGGER_HUB_URL, createDebugUrl } from "./debug";
+import { DEFAULT_DEBUGGER_HUB_URL, createDebugUrl } from "../debug";
 import { currentURL } from "./utils";
 
 type State = {
@@ -73,17 +73,17 @@ export default async function Home({ searchParams }: NextServerPageProps) {
         previousFrame={previousFrame}
       >
         {/* <FrameImage src="https://framesjs.org/og.png" /> */}
-        <FrameImage src="https://i.ytimg.com/vi/9qcpgjdsCxc/maxresdefault.jpg" >
+        <FrameImage src="https://image-cdn.hypb.st/https%3A%2F%2Fhypebeast.com%2Fimage%2F2023%2F11%2Fdua-lipa-houdini-new-single-release-000.jpg?w=960&cbr=1&q=90&fit=max" >
         
         </FrameImage>
 
-        <FrameButton action="post" target="/second">
+        <FrameButton action="post" target="/third">
          Love it! &#10084;
         </FrameButton>
-        <FrameButton action="link" target={`https://www.youtube.com/watch?v=7wtfhZwyrcc`}>
+        <FrameButton action="link" target={`https://www.youtube.com/watch?v=suAR1PYFNYA`}>
           Music Link
         </FrameButton> 
-        <FrameButton action="post" target="/second">
+        <FrameButton action="post" target="/third">
          Naahh! &#128078;
         </FrameButton>
       </FrameContainer>

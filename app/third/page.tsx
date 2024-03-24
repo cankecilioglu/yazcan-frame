@@ -10,7 +10,7 @@ import {
   useFramesReducer,
 } from "frames.js/next/server";
 import Link from "next/link";
-import { DEFAULT_DEBUGGER_HUB_URL, createDebugUrl } from "./debug";
+import { DEFAULT_DEBUGGER_HUB_URL, createDebugUrl } from "../debug";
 import { currentURL } from "./utils";
 
 type State = {
@@ -73,17 +73,17 @@ export default async function Home({ searchParams }: NextServerPageProps) {
         previousFrame={previousFrame}
       >
         {/* <FrameImage src="https://framesjs.org/og.png" /> */}
-        <FrameImage src="https://i.ytimg.com/vi/9qcpgjdsCxc/maxresdefault.jpg" >
+        <FrameImage src="https://i.ytimg.com/vi/y9-wRGRbJyw/maxresdefault.jpg" >
         
         </FrameImage>
 
-        <FrameButton action="post" target="/second">
+        <FrameButton action="post" target="">
          Love it! &#10084;
         </FrameButton>
-        <FrameButton action="link" target={`https://www.youtube.com/watch?v=7wtfhZwyrcc`}>
+        <FrameButton action="link" target={`https://www.youtube.com/watch?v=S9bCLPwzSC0`}>
           Music Link
         </FrameButton> 
-        <FrameButton action="post" target="/second">
+        <FrameButton action="post" target="">
          Naahh! &#128078;
         </FrameButton>
       </FrameContainer>
