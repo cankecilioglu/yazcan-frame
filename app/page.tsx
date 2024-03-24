@@ -8,10 +8,27 @@ import {
   getPreviousFrame,
   useFramesReducer,
 } from "frames.js/next/server";
+import { getXmtpFrameMessage, isXmtpFrameActionPayload } from "frames.js/xmtp"; 
 import Link from "next/link";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { DEFAULT_DEBUGGER_HUB_URL, createDebugUrl } from "./debug";
 import { currentURL } from "./utils";
+
+type ClientProtocolId = {
+  id: string;
+  version: string;
+};
+
+const acceptedProtocols: ClientProtocolId[] = [ 
+  {
+    id: "xmtp", 
+    version: "vNext", 
+  }, 
+  { 
+    id: "farcaster", 
+    version: "vNext", 
+  }, 
+]; 
 
 const genAI = new GoogleGenerativeAI(process.env.API_KEY as string);
 
@@ -20,7 +37,7 @@ async function makeAIRrequest(likedSongs: string[]) {
 
   const model = genAI.getGenerativeModel({ model: "gemini-1.0-pro"});
   const prompt = `Suggest me a song based on these songs: ${likedSongs.join(", ")}. I would like you to return search url of the song you suggested and what kind of music it mainly contains, link shouldn't be broken. Genre should be one of these: pop, rock or rap. The format I want you to return is as follows: '{ "link": "<youtube_link>", "genre": "<genre>" }'`
-
+  console.log(prompt);
   const result = await model.generateContent(prompt);
   const response = await result.response;
   const text = response.text();
@@ -46,17 +63,20 @@ const musics = [
   {
     genre: "rock",
     name: "Believer - Imagine Dragons",
-    link: "https://i.ytimg.com/vi/9qcpgjdsCxc/maxresdefault.jpg"
+    link: "https://i.ytimg.com/vi/9qcpgjdsCxc/maxresdefault.jpg",
+    music: "https://www.youtube.com/watch?v=7wtfhZwyrcc"
   },
   {
     genre: "pop",
     name: "Houdini - Dua Lipa",
-    link: "https://image-cdn.hypb.st/https%3A%2F%2Fhypebeast.com%2Fimage%2F2023%2F11%2Fdua-lipa-houdini-new-single-release-000.jpg?w=960&cbr=1&q=90&fit=max"
+    link: "https://image-cdn.hypb.st/https%3A%2F%2Fhypebeast.com%2Fimage%2F2023%2F11%2Fdua-lipa-houdini-new-single-release-000.jpg?w=960&cbr=1&q=90&fit=max",
+    music: "https://www.youtube.com/watch?v=suAR1PYFNYA"
   },
   {
     genre: "rap",
     name: "Mockingbird - Eminem",
-    link: "https://i.ytimg.com/vi/y9-wRGRbJyw/maxresdefault.jpg"
+    link: "https://i.ytimg.com/vi/y9-wRGRbJyw/maxresdefault.jpg",
+    music: "https://www.youtube.com/watch?v=S9bCLPwzSC0",
   }
 ]
 
@@ -124,7 +144,7 @@ export default async function Home({ searchParams }: NextServerPageProps) {
         <FrameButton>
          Love it! &#10084;
         </FrameButton>
-        <FrameButton action="link" target={`https://www.youtube.com/watch?v=7wtfhZwyrcc`}>
+        <FrameButton action="link" target={musics.filter((el) => el.genre === state.activePage)[0].music}>
           Music Link
         </FrameButton> 
         <FrameButton>
